@@ -6,11 +6,11 @@
  * A class definition that includes attributes and functions used across both the
  * public-facing side of the site and the admin area.
  *
- * @link       https://wp.com/
+ * @link       https://https://mikezielonka.com
  * @since      1.0.0
  *
- * @package    wp_Category_Customization
- * @subpackage wp_Category_Customization/includes
+ * @package    Wp_Term_Custom_Heading
+ * @subpackage Wp_Term_Custom_Heading/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    wp_Category_Customization
- * @subpackage wp_Category_Customization/includes
+ * @package    Wp_Term_Custom_Heading
+ * @subpackage Wp_Term_Custom_Heading/includes
  * @author     Michael Zielonka <me@mikezielonka.com>
  */
-class wp_Category_Customization {
+class Wp_Term_Custom_Heading {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class wp_Category_Customization {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      wp_Category_Customization_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Wp_Term_Custom_Heading_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -67,12 +67,12 @@ class wp_Category_Customization {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'wp_CATEGORY_CUSTOMIZATION_VERSION' ) ) {
-			$this->version = wp_CATEGORY_CUSTOMIZATION_VERSION;
+		if ( defined( 'WP_TERM_CUSTOM_HEADING_VERSION' ) ) {
+			$this->version = WP_TERM_CUSTOM_HEADING_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->plugin_name = 'wp-category-customization';
+		$this->plugin_name = 'wp-term-custom-heading';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -86,10 +86,10 @@ class wp_Category_Customization {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - wp_Category_Customization_Loader. Orchestrates the hooks of the plugin.
-	 * - wp_Category_Customization_i18n. Defines internationalization functionality.
-	 * - wp_Category_Customization_Admin. Defines all hooks for the admin area.
-	 * - wp_Category_Customization_Public. Defines all hooks for the public side of the site.
+	 * - Wp_Term_Custom_Heading_Loader. Orchestrates the hooks of the plugin.
+	 * - Wp_Term_Custom_Heading_i18n. Defines internationalization functionality.
+	 * - Wp_Term_Custom_Heading_Admin. Defines all hooks for the admin area.
+	 * - Wp_Term_Custom_Heading_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -103,33 +103,33 @@ class wp_Category_Customization {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wp-category-customization-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wp-term-custom-heading-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wp-category-customization-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-wp-term-custom-heading-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-category-customization-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-wp-term-custom-heading-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wp-category-customization-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-wp-term-custom-heading-public.php';
 
-		$this->loader = new wp_Category_Customization_Loader();
+		$this->loader = new Wp_Term_Custom_Heading_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the wp_Category_Customization_i18n class in order to set the domain and to register the hook
+	 * Uses the Wp_Term_Custom_Heading_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -137,7 +137,7 @@ class wp_Category_Customization {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new wp_Category_Customization_i18n();
+		$plugin_i18n = new Wp_Term_Custom_Heading_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -152,10 +152,11 @@ class wp_Category_Customization {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new wp_Category_Customization_Admin( $this->get_plugin_name(), $this->get_version() );
+		$plugin_admin = new Wp_Term_Custom_Heading_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
 		$this->loader->add_action( 'category_add_form_fields', $plugin_admin, 'category_fields_new', 10 );
 		$this->loader->add_action( 'category_edit_form_fields', $plugin_admin, 'category_fields_edit', 10, 2 );
 
@@ -173,7 +174,7 @@ class wp_Category_Customization {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new wp_Category_Customization_Public( $this->get_plugin_name(), $this->get_version() );
+		$plugin_public = new Wp_Term_Custom_Heading_Public( $this->get_plugin_name(), $this->get_version() );
 
 		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -206,7 +207,7 @@ class wp_Category_Customization {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    wp_Category_Customization_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Wp_Term_Custom_Heading_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

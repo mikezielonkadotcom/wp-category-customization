@@ -3,11 +3,11 @@
 /**
  * Fired during plugin activation
  *
- * @link       https://wp.com/
+ * @link       https://https://mikezielonka.com
  * @since      1.0.0
  *
- * @package    wp_Category_Customization
- * @subpackage wp_Category_Customization/includes
+ * @package    Wp_Term_Custom_Heading
+ * @subpackage Wp_Term_Custom_Heading/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's activation.
  *
  * @since      1.0.0
- * @package    wp_Category_Customization
- * @subpackage wp_Category_Customization/includes
+ * @package    Wp_Term_Custom_Heading
+ * @subpackage Wp_Term_Custom_Heading/includes
  * @author     Michael Zielonka <me@mikezielonka.com>
  */
-class wp_Category_Customization_Activator {
+class Wp_Term_Custom_Heading_Activator {
 
 	/**
 	 * Short Description. (use period)

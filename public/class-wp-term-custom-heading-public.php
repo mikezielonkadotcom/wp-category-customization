@@ -3,11 +3,11 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       https://wp.com/
+ * @link       https://https://mikezielonka.com
  * @since      1.0.0
  *
- * @package    wp_Category_Customization
- * @subpackage wp_Category_Customization/public
+ * @package    Wp_Term_Custom_Heading
+ * @subpackage Wp_Term_Custom_Heading/public
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    wp_Category_Customization
- * @subpackage wp_Category_Customization/public
+ * @package    Wp_Term_Custom_Heading
+ * @subpackage Wp_Term_Custom_Heading/public
  * @author     Michael Zielonka <me@mikezielonka.com>
  */
-class wp_Category_Customization_Public {
+class Wp_Term_Custom_Heading_Public {
 
 	/**
 	 * The ID of this plugin.
@@ -65,15 +65,15 @@ class wp_Category_Customization_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in wp_Category_Customization_Loader as all of the hooks are defined
+		 * defined in Wp_Term_Custom_Heading_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The wp_Category_Customization_Loader will then create the relationship
+		 * The Wp_Term_Custom_Heading_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-category-customization-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/wp-term-custom-heading-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -88,15 +88,15 @@ class wp_Category_Customization_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in wp_Category_Customization_Loader as all of the hooks are defined
+		 * defined in Wp_Term_Custom_Heading_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The wp_Category_Customization_Loader will then create the relationship
+		 * The Wp_Term_Custom_Heading_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-category-customization-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/wp-term-custom-heading-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 
@@ -106,9 +106,9 @@ class wp_Category_Customization_Public {
 		if ( is_category() ) {
 			$category = get_category( get_query_var( 'cat' ) );
 			$cat_id = $category->cat_ID;
-			$custom_category_page_title_lt = get_term_meta($cat_id, 'custom_category_page_title_lt', true);
-				if (!empty($custom_category_page_title_lt)) {
-					$title = $custom_category_page_title_lt;
+			$custom_category_page_title_wptch = get_term_meta($cat_id, 'custom_category_page_title_wptch', true);
+				if (!empty($custom_category_page_title_wptch)) {
+					$title = $custom_category_page_title_wptch;
 				}
 		}
 

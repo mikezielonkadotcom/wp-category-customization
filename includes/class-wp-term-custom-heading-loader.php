@@ -3,11 +3,11 @@
 /**
  * Register all actions and filters for the plugin
  *
- * @link       https://wp.com/
+ * @link       https://https://mikezielonka.com
  * @since      1.0.0
  *
- * @package    wp_Category_Customization
- * @subpackage wp_Category_Customization/includes
+ * @package    Wp_Term_Custom_Heading
+ * @subpackage Wp_Term_Custom_Heading/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    wp_Category_Customization
- * @subpackage wp_Category_Customization/includes
+ * @package    Wp_Term_Custom_Heading
+ * @subpackage Wp_Term_Custom_Heading/includes
  * @author     Michael Zielonka <me@mikezielonka.com>
  */
-class wp_Category_Customization_Loader {
+class Wp_Term_Custom_Heading_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.
