@@ -16,7 +16,7 @@
  * Plugin Name:       WP Term Custom Heading
  * Plugin URI:        https://https://mikezielonka.com
  * Description:       Plugin used to override category page title on archive page.
- * Version:           1.0.1
+ * Version:           1.2.0
  * Author:            Michael Zielonka
  * Author URI:        https://https://mikezielonka.com
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WP_TERM_CUSTOM_HEADING_VERSION', '1.0.1' );
+define( 'WP_TERM_CUSTOM_HEADING_VERSION', '1.2.0' );
 
 /**
  * The code that runs during plugin activation.
