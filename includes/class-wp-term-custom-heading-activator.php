@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       https://https://mikezielonka.com
+ * @link       https://mikezielonka.com
  * @since      1.0.0
  *
  * @package    Wp_Term_Custom_Heading

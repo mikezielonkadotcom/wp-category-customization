@@ -6,7 +6,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       https://https://mikezielonka.com
+ * @link       https://mikezielonka.com
  * @since      1.0.0
  *
  * @package    Wp_Term_Custom_Heading

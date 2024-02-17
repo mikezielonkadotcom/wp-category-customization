@@ -8,17 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://https://mikezielonka.com
+ * @link              https://mikezielonka.com
  * @since             1.0.0
  * @package           Wp_Term_Custom_Heading
  *
  * @wordpress-plugin
  * Plugin Name:       WP Term Custom Heading
- * Plugin URI:        https://https://mikezielonka.com
+ * Plugin URI:        https://mikezielonka.com
  * Description:       Plugin used to override category page title on archive page.
  * Version:           1.2.0
  * Author:            Michael Zielonka
- * Author URI:        https://https://mikezielonka.com
+ * Author URI:        https://mikezielonka.com
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wp-term-custom-heading
