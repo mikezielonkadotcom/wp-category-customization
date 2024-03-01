@@ -154,9 +154,6 @@ class Wp_Term_Custom_Heading {
 
 		$plugin_admin = new Wp_Term_Custom_Heading_Admin( $this->get_plugin_name(), $this->get_version() );
 
-		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
 		$this->loader->add_action( 'category_add_form_fields', $plugin_admin, 'category_fields_new', 10 );
 		$this->loader->add_action( 'category_edit_form_fields', $plugin_admin, 'category_fields_edit', 10, 2 );
 
@@ -175,9 +172,6 @@ class Wp_Term_Custom_Heading {
 	private function define_public_hooks() {
 
 		$plugin_public = new Wp_Term_Custom_Heading_Public( $this->get_plugin_name(), $this->get_version() );
-
-		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		// $this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'get_the_archive_title', $plugin_public, 'maybe_override_archive_title', 100, 3 );
 
