@@ -21,6 +21,24 @@ Installing the plugin:
 2. Alternatively, download the plugin and upload the contents of wp-category-customization.zip to your plugins directory, which usually is /wp-content/plugins/.
 3. Activate the plugin
 
+== Frequently Asked Questions ==
+
+= Which themes are supported? =
+
+All themes are supported which uses the "get_the_archive_title" hook to display the category title on frontend.
+
+= How to customize this title? =
+
+You can use CSS in the Theme Customizer.
+
+= How the option is named in the backend? =
+
+The custom category title is named as "Page Title" in the add/edit category pages.
+
+= What taxonomies are supported? =
+
+The default WordPress category taxonomy is supported.
+
 == Screenshots ==
 
 1. You can override archive title with this custom field.
