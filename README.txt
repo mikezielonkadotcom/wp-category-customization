@@ -25,7 +25,7 @@ Installing the plugin:
 
 = Which themes are supported? =
 
-All themes are supported which uses the "get_the_archive_title" hook to display the category title on frontend.
+All themes are supported which uses the "get_the_archive_title" hook to display the category title on the frontend.
 
 = How to customize this title? =
 
@@ -33,7 +33,7 @@ You can use CSS in the Theme Customizer.
 
 = How the option is named in the backend? =
 
-The custom category title is named as "Page Title" in the add/edit category pages.
+The custom category title is named "Page Title" in the add/edit category pages.
 
 = What taxonomies are supported? =
 
@@ -41,7 +41,7 @@ The default WordPress category taxonomy is supported.
 
 == Screenshots ==
 
-1. You can override archive title with this custom field.
+1. You can override the archive title with this custom field.
 
 == Changelog ==
 
