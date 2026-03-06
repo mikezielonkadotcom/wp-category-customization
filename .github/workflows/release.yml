@@ -1,0 +1,25 @@
+# Creates GitHub release with plugin ZIP on tag push (v*).
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Plugin slug (optional, auto-detected if omitted)'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    uses: mikezielonkadotcom/wp-github-plugin-actions/.github/workflows/wordpress-plugin-release.yml@main
+    with:
+      slug: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.slug || '' }}
+      php_version: '8.2'
+      node_version: '20'
+    secrets: inherit

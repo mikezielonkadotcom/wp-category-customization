@@ -1,0 +1,27 @@
+# Exclude dev files from release ZIP.
+# Lines starting with ! are force-includes.
+
+.git
+.gitignore
+.gitattributes
+.github
+node_modules
+tests
+phpunit.xml
+composer.json
+composer.lock
+package.json
+package-lock.json
+*.map
+*.zip
+release
+release-build
+*.sh
+debug-*.php
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+*.md
+!README.md
+screenshot-1.png
