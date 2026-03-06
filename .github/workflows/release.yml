@@ -1,4 +1,4 @@
-# Creates GitHub release with plugin ZIP on tag push (v*).
+# Build plugin ZIP and create GitHub release on tag push (v*).
 
 name: Release
 
@@ -17,9 +17,146 @@ permissions:
 
 jobs:
   release:
-    uses: mikezielonkadotcom/wp-github-plugin-actions/.github/workflows/wordpress-plugin-release.yml@main
-    with:
-      slug: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.slug || '' }}
-      php_version: '8.2'
-      node_version: '20'
-    secrets: inherit
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine plugin metadata
+        id: meta
+        shell: bash
+        run: |
+          SLUG="${{ github.event.inputs.slug }}"
+          if [ -z "$SLUG" ]; then
+            PLUGIN_FILE=$(find . -maxdepth 1 -name "*.php" -type f ! -name "uninstall.php" | head -1)
+            if [ -n "$PLUGIN_FILE" ]; then
+              SLUG=$(basename "$PLUGIN_FILE" .php)
+            else
+              SLUG="$(basename "$GITHUB_REPOSITORY")"
+            fi
+          fi
+
+          if [[ "$GITHUB_REF" =~ refs/tags/v(.+) ]]; then
+            VERSION="${BASH_REMATCH[1]}"
+          else
+            VERSION="dev"
+          fi
+
+          PLUGIN_FILE="$SLUG.php"
+          if [ ! -f "$PLUGIN_FILE" ]; then
+            PLUGIN_FILE=$(find . -maxdepth 1 -name "*.php" -type f ! -name "uninstall.php" | head -1)
+          fi
+          PLUGIN_VERSION=$(grep -o "Version: [0-9.]*" "$PLUGIN_FILE" 2>/dev/null | cut -d' ' -f2 || echo "$VERSION")
+
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "plugin_version=$PLUGIN_VERSION" >> "$GITHUB_OUTPUT"
+          echo "Using slug: $SLUG (version: $VERSION)"
+
+      - name: Validate plugin structure
+        run: |
+          SLUG="${{ steps.meta.outputs.slug }}"
+          if [ ! -f "$SLUG.php" ]; then
+            echo "::error::Main plugin file $SLUG.php not found!"
+            exit 1
+          fi
+          echo "✓ Plugin structure validated"
+
+      - name: Setup PHP
+        if: hashFiles('composer.json') != ''
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, curl, zip
+
+      - name: Install Composer dependencies
+        if: hashFiles('composer.json') != ''
+        run: composer install --no-dev --no-progress --prefer-dist --optimize-autoloader
+
+      - name: Setup Node.js
+        if: hashFiles('package.json') != ''
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Build frontend assets
+        if: hashFiles('package.json') != ''
+        run: |
+          npm ci
+          npm run build:prod 2>/dev/null || npm run build 2>/dev/null || npm run prod 2>/dev/null || echo "No build script, skipping"
+
+      - name: Prepare release directory
+        run: |
+          rm -rf release
+          mkdir -p "release/${{ steps.meta.outputs.slug }}"
+
+      - name: Copy plugin files
+        shell: bash
+        run: |
+          set -e
+          SLUG="${{ steps.meta.outputs.slug }}"
+          DEST="release/$SLUG"
+
+          if [ -f ".distignore" ]; then
+            echo "Using .distignore"
+            rsync -av --exclude-from='.distignore' --exclude='release/' ./ "$DEST/"
+          else
+            echo "Using default exclusions"
+            rsync -av \
+              --exclude='.git' \
+              --exclude='.github' \
+              --exclude='node_modules' \
+              --exclude='vendor' \
+              --exclude='tests' \
+              --exclude='*.map' \
+              --exclude='*.zip' \
+              --exclude='release/' \
+              --exclude='composer.*' \
+              --exclude='package*.json' \
+              --exclude='phpunit.*' \
+              --exclude='*.sh' \
+              --exclude='.distignore' \
+              ./ "$DEST/"
+          fi
+
+          find "$DEST" -name ".DS_Store" -delete 2>/dev/null || true
+          find "$DEST" -name "Thumbs.db" -delete 2>/dev/null || true
+          echo "✓ Files copied"
+
+      - name: Validate release package
+        run: |
+          SLUG="${{ steps.meta.outputs.slug }}"
+          DEST="release/$SLUG"
+          [ ! -f "$DEST/$SLUG.php" ] && { echo "::error::Plugin file missing in release!"; exit 1; }
+          echo "✓ Release validated"
+
+      - name: Create ZIP
+        working-directory: release
+        run: |
+          SLUG="${{ steps.meta.outputs.slug }}"
+          zip -r "$SLUG.zip" "$SLUG" -x "*.DS_Store" "*.Thumbs.db"
+          unzip -l "$SLUG.zip" | head -20
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.meta.outputs.slug }}-${{ steps.meta.outputs.version }}.zip
+          path: release/${{ steps.meta.outputs.slug }}.zip
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ steps.meta.outputs.slug }} v${{ steps.meta.outputs.version }}
+          files: release/${{ steps.meta.outputs.slug }}.zip
+          generate_release_notes: true
+          make_latest: true
+          draft: false
+          prerelease: false
