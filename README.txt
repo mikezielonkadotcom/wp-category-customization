@@ -3,7 +3,7 @@ Contributors: mikezielonka
 Tags: kadence, categories
 Requires at least: 3.0.1
 Tested up to: 6.7
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -44,6 +44,9 @@ The default WordPress category taxonomy is supported.
 1. You can override the archive title with this custom field.
 
 == Changelog ==
+
+= 1.3.1 =
+* Test release workflow.
 
 = 1.3.0 =
 * Fix double https:// in author and plugin URIs.
