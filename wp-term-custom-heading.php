@@ -16,11 +16,11 @@
  * Plugin Name:       WP Term Custom Heading
  * Plugin URI:        https://mikezielonka.com
  * Description:       Plugin used to override category page title on archive page.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Author:            Michael Zielonka
  * Author URI:        https://mikezielonka.com
  * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       wp-term-custom-heading
  * Domain Path:       /languages
  */
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'WP_TERM_CUSTOM_HEADING_VERSION', '1.2.0' );
+define( 'WP_TERM_CUSTOM_HEADING_VERSION', '1.3.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -63,6 +63,19 @@ register_deactivation_hook( __FILE__, 'deactivate_wp_term_custom_heading' );
  * admin-specific hooks, and public-facing site hooks.
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-wp-term-custom-heading.php';
+
+/**
+ * Plugin update checker - checks GitHub for new releases.
+ */
+require plugin_dir_path( __FILE__ ) . 'vendor/plugin-update-checker/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$wp_tch_update_checker = PucFactory::buildUpdateChecker(
+	'https://github.com/mikezielonkadotcom/wp-category-customization/',
+	__FILE__,
+	'wp-term-custom-heading'
+);
+$wp_tch_update_checker->getVcsApi()->enableReleaseAssets();
 
 /**
  * Begins execution of the plugin.

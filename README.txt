@@ -2,10 +2,10 @@
 Contributors: mikezielonka
 Tags: kadence, categories
 Requires at least: 3.0.1
-Tested up to: 6.3
-Stable tag: 4.3
-License: GPLv3 or later
-License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Tested up to: 6.7
+Stable tag: 1.3.0
+License: GPL-2.0+
+License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
 This plugin adds the ability to have a custom h1 title on categories like how Genesis does archive headlines.
 
@@ -44,6 +44,11 @@ The default WordPress category taxonomy is supported.
 1. You can override the archive title with this custom field.
 
 == Changelog ==
+
+= 1.3.0 =
+* Fix double https:// in author and plugin URIs.
+* Add automatic update checking from GitHub.
+* Update license URI to HTTPS.
 
 = 1.2 =
 * Fix typo.
