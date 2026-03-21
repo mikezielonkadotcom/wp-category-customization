@@ -74,7 +74,7 @@ class Wp_Term_Custom_Heading_Admin {
 		<tr class="form-field">
 			<th scope="row"><label for="custom_category_page_title_wptch"><?php esc_html_e( 'Page Title', $this->plugin_name ); ?></label></th>
 			<td>
-				<input type="text" name="custom_category_page_title_wptch" id="custom_category_page_title_wptch" value="<?php echo $custom_category_page_title_wptch; ?>">
+				<input type="text" name="custom_category_page_title_wptch" id="custom_category_page_title_wptch" value="<?php echo esc_attr( $custom_category_page_title_wptch ); ?>">
 				<p class="description"><?php esc_html_e( 'Use this field if you want to override the category archive title (h1).', $this->plugin_name ); ?></p>
 			</td>
 		</tr>
@@ -83,12 +83,26 @@ class Wp_Term_Custom_Heading_Admin {
 
 	public function save_category_fields( $term_id ) {
 
-		$custom_category_page_title_wptch = get_term_meta($term_id, 'custom_category_page_title_wptch', true);
+		// Verify nonce — accept either the "new" or "edit" nonce.
+		$valid_nonce = false;
+		if ( isset( $_POST['category_meta_new_wptch_nonce'] ) ) {
+			$valid_nonce = wp_verify_nonce( $_POST['category_meta_new_wptch_nonce'], 'category_meta_new_wptch' );
+		} elseif ( isset( $_POST['category_meta_edit_wptch_nonce'] ) ) {
+			$valid_nonce = wp_verify_nonce( $_POST['category_meta_edit_wptch_nonce'], 'category_meta_edit_wptch' );
+		}
 
-		if( ! empty( $_POST['custom_category_page_title_wptch'] ) ) { // IF the user has entered text, update our field.
-			 update_term_meta($term_id, 'custom_category_page_title_wptch', esc_attr($_POST['custom_category_page_title_wptch']));
-		} elseif( ! empty( $custom_category_page_title_wptch ) ) {
-			 update_term_meta($term_id, 'custom_category_page_title_wptch', '');
+		if ( ! $valid_nonce ) {
+			return;
+		}
+
+		// Capability check.
+		if ( ! current_user_can( 'manage_categories' ) ) {
+			return;
+		}
+
+		if ( isset( $_POST['custom_category_page_title_wptch'] ) ) {
+			$value = sanitize_text_field( wp_unslash( $_POST['custom_category_page_title_wptch'] ) );
+			update_term_meta( $term_id, 'custom_category_page_title_wptch', $value );
 		}
 
 	}

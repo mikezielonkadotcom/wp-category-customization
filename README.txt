@@ -1,9 +1,10 @@
 === WP Term Custom Heading ===
 Contributors: mikezielonka
 Tags: kadence, categories
-Requires at least: 3.0.1
+Requires at least: 5.5
 Tested up to: 6.7
-Stable tag: 1.3.1
+Requires PHP: 7.4
+Stable tag: 1.4.0
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -44,6 +45,13 @@ The default WordPress category taxonomy is supported.
 1. You can override the archive title with this custom field.
 
 == Changelog ==
+
+= 1.4.0 =
+* Security: Add nonce verification and capability checks on save.
+* Security: Fix XSS — escape output on edit form.
+* Fix: Use sanitize_text_field() instead of esc_attr() for input sanitization.
+* Fix: Register archive title override as filter instead of action.
+* Update: Bump minimum WordPress requirement to 5.5 (uses 3-arg filter signature).
 
 = 1.3.1 =
 * Test release workflow.
