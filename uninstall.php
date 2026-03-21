@@ -29,3 +29,16 @@
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 	exit;
 }
+
+// Remove custom term meta from all categories.
+$terms = get_terms( array(
+	'taxonomy'   => 'category',
+	'hide_empty' => false,
+	'fields'     => 'ids',
+) );
+
+if ( ! is_wp_error( $terms ) ) {
+	foreach ( $terms as $term_id ) {
+		delete_term_meta( $term_id, 'custom_category_page_title_wptch' );
+	}
+}
