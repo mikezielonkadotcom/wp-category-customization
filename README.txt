@@ -4,7 +4,7 @@ Tags: kadence, categories
 Requires at least: 5.5
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -45,6 +45,18 @@ The default WordPress category taxonomy is supported.
 1. You can override the archive title with this custom field.
 
 == Changelog ==
+
+= 1.5.0 =
+* Security: Register the term meta with register_term_meta() so REST, WP-CLI and other plugins all pass through sanitize_text_field() and a manage_categories check.
+* Security: Escape the custom archive title with esc_html() on output.
+* Security: Unslash and sanitize nonce values before wp_verify_nonce().
+* Fix: Use get_queried_object() instead of get_category( get_query_var( 'cat' ) ), which produced a PHP warning on multi-category or negative cat queries.
+* Fix: Use the literal text domain in admin strings so translation tools pick them up.
+* Fix: Uninstall now removes the meta in a single delete_metadata() call.
+* Update: Add Requires at least, Requires PHP and Update URI plugin headers.
+* Update: Upgrade bundled plugin-update-checker from 5.5 to 5.7 and restrict release assets to .zip files.
+* Update: Release workflow verifies the tag matches the plugin Version header and pins actions to commit SHAs.
+* Chore: Remove the empty activator and deactivator boilerplate classes.
 
 = 1.4.0 =
 * Security: Add nonce verification and capability checks on save.

@@ -22,15 +22,17 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           fetch-depth: 0
 
       - name: Determine plugin metadata
         id: meta
         shell: bash
+        env:
+          INPUT_SLUG: ${{ github.event.inputs.slug }}
         run: |
-          SLUG="${{ github.event.inputs.slug }}"
+          SLUG="$INPUT_SLUG"
           if [ -z "$SLUG" ]; then
             PLUGIN_FILE=$(find . -maxdepth 1 -name "*.php" -type f ! -name "uninstall.php" | head -1)
             if [ -n "$PLUGIN_FILE" ]; then
@@ -44,6 +46,11 @@ jobs:
             VERSION="${BASH_REMATCH[1]}"
           else
             VERSION="dev"
+          fi
+
+          if ! [[ "$SLUG" =~ ^[a-z0-9][a-z0-9._-]*$ ]]; then
+            echo "::error::Invalid plugin slug: $SLUG"
+            exit 1
           fi
 
           PLUGIN_FILE="$SLUG.php"
@@ -66,9 +73,21 @@ jobs:
           fi
           echo "✓ Plugin structure validated"
 
+      - name: Verify tag matches plugin version
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          TAG_VERSION: ${{ steps.meta.outputs.version }}
+          PLUGIN_VERSION: ${{ steps.meta.outputs.plugin_version }}
+        run: |
+          if [ "$TAG_VERSION" != "$PLUGIN_VERSION" ]; then
+            echo "::error::Tag version ($TAG_VERSION) does not match plugin Version header ($PLUGIN_VERSION)."
+            exit 1
+          fi
+          echo "✓ Tag v$TAG_VERSION matches plugin Version header"
+
       - name: Setup PHP
         if: hashFiles('composer.json') != ''
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2.40.0
         with:
           php-version: '8.2'
           extensions: mbstring, xml, curl, zip
@@ -79,7 +98,7 @@ jobs:
 
       - name: Setup Node.js
         if: hashFiles('package.json') != ''
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
         with:
           node-version: '20'
           cache: 'npm'
@@ -143,7 +162,7 @@ jobs:
           unzip -l "$SLUG.zip" | head -20
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: ${{ steps.meta.outputs.slug }}-${{ steps.meta.outputs.version }}.zip
           path: release/${{ steps.meta.outputs.slug }}.zip
@@ -151,7 +170,7 @@ jobs:
 
       - name: Create GitHub Release
         if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
         with:
           tag_name: ${{ github.ref_name }}
           name: ${{ steps.meta.outputs.slug }} v${{ steps.meta.outputs.version }}

@@ -173,6 +173,7 @@ class Wp_Term_Custom_Heading {
 
 		$plugin_public = new Wp_Term_Custom_Heading_Public( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'init', $plugin_public, 'register_term_meta' );
 		$this->loader->add_filter( 'get_the_archive_title', $plugin_public, 'maybe_override_archive_title', 100, 3 );
 
 	}
