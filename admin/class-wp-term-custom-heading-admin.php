@@ -59,9 +59,9 @@ class Wp_Term_Custom_Heading_Admin {
 
 		?>
 		<div class="form-field">
-			<label for="custom_category_page_title_wptch"><?php esc_html_e( 'Page Title', $this->plugin_name ); ?></label>
+			<label for="custom_category_page_title_wptch"><?php esc_html_e( 'Page Title', 'wp-term-custom-heading' ); ?></label>
 			<input type="text" name="custom_category_page_title_wptch" id="custom_category_page_title_wptch" value="">
-			<p><?php esc_html_e( 'Use this field if you want to override the category archive title (h1).', $this->plugin_name ); ?></p>
+			<p><?php esc_html_e( 'Use this field if you want to override the category archive title (h1).', 'wp-term-custom-heading' ); ?></p>
 		</div>
 		<?php
 	}
@@ -72,10 +72,10 @@ class Wp_Term_Custom_Heading_Admin {
 
 		?>
 		<tr class="form-field">
-			<th scope="row"><label for="custom_category_page_title_wptch"><?php esc_html_e( 'Page Title', $this->plugin_name ); ?></label></th>
+			<th scope="row"><label for="custom_category_page_title_wptch"><?php esc_html_e( 'Page Title', 'wp-term-custom-heading' ); ?></label></th>
 			<td>
 				<input type="text" name="custom_category_page_title_wptch" id="custom_category_page_title_wptch" value="<?php echo esc_attr( $custom_category_page_title_wptch ); ?>">
-				<p class="description"><?php esc_html_e( 'Use this field if you want to override the category archive title (h1).', $this->plugin_name ); ?></p>
+				<p class="description"><?php esc_html_e( 'Use this field if you want to override the category archive title (h1).', 'wp-term-custom-heading' ); ?></p>
 			</td>
 		</tr>
 		<?php
@@ -83,12 +83,14 @@ class Wp_Term_Custom_Heading_Admin {
 
 	public function save_category_fields( $term_id ) {
 
-		// Verify nonce — accept either the "new" or "edit" nonce.
+		// Verify nonce: accept either the "new" or "edit" nonce.
 		$valid_nonce = false;
 		if ( isset( $_POST['category_meta_new_wptch_nonce'] ) ) {
-			$valid_nonce = wp_verify_nonce( $_POST['category_meta_new_wptch_nonce'], 'category_meta_new_wptch' );
+			$nonce       = sanitize_text_field( wp_unslash( $_POST['category_meta_new_wptch_nonce'] ) );
+			$valid_nonce = wp_verify_nonce( $nonce, 'category_meta_new_wptch' );
 		} elseif ( isset( $_POST['category_meta_edit_wptch_nonce'] ) ) {
-			$valid_nonce = wp_verify_nonce( $_POST['category_meta_edit_wptch_nonce'], 'category_meta_edit_wptch' );
+			$nonce       = sanitize_text_field( wp_unslash( $_POST['category_meta_edit_wptch_nonce'] ) );
+			$valid_nonce = wp_verify_nonce( $nonce, 'category_meta_edit_wptch' );
 		}
 
 		if ( ! $valid_nonce ) {

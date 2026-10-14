@@ -54,16 +54,54 @@ class Wp_Term_Custom_Heading_Public {
 
 	}
 
-	public function maybe_override_archive_title($title, $original_title, $prefix)
-	{
+	/**
+	 * Register the term meta so every write path (REST, WP-CLI, other plugins)
+	 * runs through the same sanitization and capability check.
+	 *
+	 * @since    1.5.0
+	 */
+	public function register_term_meta() {
+		register_term_meta(
+			'category',
+			'custom_category_page_title_wptch',
+			array(
+				'type'              => 'string',
+				'single'            => true,
+				'sanitize_callback' => 'sanitize_text_field',
+				'auth_callback'     => function () {
+					return current_user_can( 'manage_categories' );
+				},
+				'show_in_rest'      => true,
+			)
+		);
+	}
 
-		if ( is_category() ) {
-			$category = get_category( get_query_var( 'cat' ) );
-			$cat_id = $category->cat_ID;
-			$custom_category_page_title_wptch = get_term_meta($cat_id, 'custom_category_page_title_wptch', true);
-				if (!empty($custom_category_page_title_wptch)) {
-					$title = $custom_category_page_title_wptch;
-				}
+	/**
+	 * Replace the archive title with the category's custom page title, if set.
+	 *
+	 * Uses the queried object rather than get_query_var( 'cat' ) so that
+	 * multi-category and negative `cat` queries do not yield a null term.
+	 *
+	 * @since    1.0.0
+	 * @param    string    $title             Archive title to be displayed.
+	 * @param    string    $original_title    Archive title without prefix.
+	 * @param    string    $prefix            Archive title prefix.
+	 * @return   string
+	 */
+	public function maybe_override_archive_title( $title, $original_title, $prefix ) {
+
+		if ( ! is_category() ) {
+			return $title;
+		}
+
+		$term = get_queried_object();
+		if ( ! $term instanceof WP_Term || 'category' !== $term->taxonomy ) {
+			return $title;
+		}
+
+		$custom = get_term_meta( $term->term_id, 'custom_category_page_title_wptch', true );
+		if ( ! empty( $custom ) ) {
+			return esc_html( $custom );
 		}
 
 		return $title;
