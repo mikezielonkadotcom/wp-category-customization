@@ -25,3 +25,4 @@ Thumbs.db
 *.md
 !README.md
 screenshot-1.png
+.distignore
