@@ -57,7 +57,8 @@ jobs:
           if [ ! -f "$PLUGIN_FILE" ]; then
             PLUGIN_FILE=$(find . -maxdepth 1 -name "*.php" -type f ! -name "uninstall.php" | head -1)
           fi
-          PLUGIN_VERSION=$(grep -o "Version: [0-9.]*" "$PLUGIN_FILE" 2>/dev/null | cut -d' ' -f2 || echo "$VERSION")
+          # Read the "Version:" header; the header block pads with many spaces.
+          PLUGIN_VERSION=$(grep -m1 -E '^[[:space:]*]*Version:' "$PLUGIN_FILE" 2>/dev/null | sed -E 's/.*Version:[[:space:]]*([0-9.]+).*/\1/')
 
           echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
           echo "version=$VERSION" >> "$GITHUB_OUTPUT"
