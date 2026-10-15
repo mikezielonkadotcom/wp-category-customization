@@ -125,6 +125,17 @@ jobs:
           if [ -f ".distignore" ]; then
             echo "Using .distignore"
             rsync -av --exclude-from='.distignore' --exclude='release/' ./ "$DEST/"
+
+            # .distignore marks force-includes with a leading "!". rsync's
+            # --exclude-from does not understand that syntax, so copy those
+            # paths back in after the sync.
+            grep -E '^!' .distignore | sed -E 's/^!//' | while IFS= read -r inc; do
+              if [ -e "$inc" ]; then
+                mkdir -p "$DEST/$(dirname "$inc")"
+                cp -R "$inc" "$DEST/$inc"
+                echo "Force-included $inc"
+              fi
+            done
           else
             echo "Using default exclusions"
             rsync -av \
