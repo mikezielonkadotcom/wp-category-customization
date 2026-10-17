@@ -15,7 +15,7 @@
  * Plugin Name:       WP Term Custom Heading
  * Plugin URI:        https://mikezielonka.com
  * Description:       Plugin used to override category page title on archive page.
- * Version:           1.5.0
+ * Version:           1.5.1
  * Requires at least: 5.5
  * Requires PHP:      7.4
  * Author:            Michael Zielonka
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
 /**
  * Current plugin version.
  */
-define( 'WP_TERM_CUSTOM_HEADING_VERSION', '1.5.0' );
+define( 'WP_TERM_CUSTOM_HEADING_VERSION', '1.5.1' );
 
 /**
  * The core plugin class that is used to define internationalization,

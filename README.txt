@@ -4,7 +4,7 @@ Tags: kadence, categories
 Requires at least: 5.5
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 1.5.0
+Stable tag: 1.5.1
 License: GPL-2.0+
 License URI: https://www.gnu.org/licenses/gpl-2.0.txt
 
@@ -45,6 +45,9 @@ The default WordPress category taxonomy is supported.
 1. You can override the archive title with this custom field.
 
 == Changelog ==
+
+= 1.5.1 =
+* Fix: Release zip now includes README.md and no longer ships .distignore.
 
 = 1.5.0 =
 * Security: Register the term meta with register_term_meta() so REST, WP-CLI and other plugins all pass through sanitize_text_field() and a manage_categories check.
