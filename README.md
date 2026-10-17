@@ -49,6 +49,9 @@ The default WordPress `category` taxonomy.
 
 ## Changelog
 
+### 1.5.1
+- Fix: Release zip now includes README.md and no longer ships .distignore.
+
 ### 1.5.0
 - Security: Register the term meta with `register_term_meta()` so REST, WP-CLI and other plugins all pass through `sanitize_text_field()` and a `manage_categories` check.
 - Security: Escape the custom archive title with `esc_html()` on output.
